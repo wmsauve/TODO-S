@@ -1,2 +1,4 @@
 /TODO-S/bin/*
 /TODO-S-Tests/bin/*
+/TODO-S/obj/*
+/TODO-S-Tests/obj/*
