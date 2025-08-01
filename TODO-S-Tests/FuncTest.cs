@@ -95,6 +95,15 @@ namespace TODO_S_Tests
             UtilityItemDelete("test1", "Foo1", "Bar1");
             itemFuncController.m_testDatabase.Add("test1", item);
             UtilityItemDelete("test2", "Foo", "Bar");
+
+            bool cacheComplete = item.IsCompleted;
+            item.IsCompleted = !item.IsCompleted;
+            IActionResult updateItem = itemFuncController.UpdateItem("test1", item);
+            returnedOk = Assert.IsType<OkObjectResult>(updateItem);
+            returnedJson = Assert.IsType<string>(returnedOk.Value);
+            Response returnedSuccess = Assert.IsType<Response>(JsonSerializer.Deserialize<Response>(returnedJson));
+            Assert.False(cacheComplete == itemFuncController.m_testDatabase.GetAll()["test1"].IsCompleted);
+            Assert.Equal(StCMessages.MESSAGE_SUCCESS, returnedSuccess.Message);
         }
     }
 }

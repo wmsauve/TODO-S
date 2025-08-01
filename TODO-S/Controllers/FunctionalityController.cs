@@ -51,6 +51,11 @@ namespace TODO_S.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] ListItem item)
         {
+            if (m_testDatabase == null)
+            {
+                return Problem(detail: StCMessages.MESSAGE_SERVERSUCKS, statusCode: 500);
+            }
+
             if (item == null)
             {
                 return BadRequest(StCMessages.MESSAGE_BADBODY);
@@ -64,6 +69,31 @@ namespace TODO_S.Controllers
             m_testDatabase.Add(key, item);
             string response = new CreateResponse(key, StCMessages.MESSAGE_SUCCESS).ToJson();
             return Ok(response);
+        }
+
+        [HttpPost("{key}")]
+        public IActionResult UpdateItem(string key, [FromBody] ListItem item)
+        {
+            if (m_testDatabase == null)
+            {
+                return Problem(detail: StCMessages.MESSAGE_SERVERSUCKS, statusCode: 500);
+            }
+
+            if (item == null)
+            {
+                return BadRequest(StCMessages.MESSAGE_BADBODY);
+            }
+
+            string message = HandleEmptyDatabaseUtil();
+
+            if (m_testDatabase.TryGet(key, out var curItem) && item != null)
+            {
+                curItem.Clone(item);
+                string response = new Response(message).ToJson();
+                return Ok(response);
+            }
+
+            return NotFound(StCMessages.MESSAGE_BADKEY);
         }
 
         [HttpDelete("{key}")]

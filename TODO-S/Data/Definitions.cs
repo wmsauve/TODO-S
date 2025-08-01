@@ -43,6 +43,14 @@ namespace TODO_S.Data
             Description = description;
             IsCompleted = false;
         }
+
+        public void Clone(ListItem incomming)
+        {
+            Label = incomming.Label;
+            DueDate = incomming.DueDate;
+            Description = incomming.Description;
+            IsCompleted = incomming.IsCompleted;
+        }
     }
 
     //##########################
