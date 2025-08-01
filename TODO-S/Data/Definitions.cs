@@ -25,7 +25,7 @@ namespace TODO_S.Data
     {
         [Required] public string Label { get; set; }
         [Required] public DateTime DueDate { get; set; }
-        [Required] public string Description { get; set; }
+        [Required(AllowEmptyStrings = true)] public string Description { get; set; }
         [Required] public bool IsCompleted { get; set; }
 
         public ListItem() 
